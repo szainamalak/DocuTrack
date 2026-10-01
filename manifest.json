@@ -1,0 +1,15 @@
+{
+  "name": "DocuTrack - Smart Document Expiry Tracker",
+  "short_name": "DocuTrack",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#202a55",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

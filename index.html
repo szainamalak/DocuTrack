@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DocuTrack - Smart Document Expiry Tracker">
+  <title>DocuTrack | Smart Document Expiry Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#202a55">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">D</div>
+        <div><h1>DocuTrack</h1><span>Smart Document Manager</span></div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-view="dashboard">⌂ <span>Dashboard</span></button>
+        <button class="nav-item" data-view="documents">▣ <span>My Documents</span></button>
+        <button class="nav-item" data-view="calendar">◫ <span>Expiry Timeline</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="storage-card">
+          <span class="mini-label">LOCAL STORAGE</span>
+          <strong id="storageStatus">Checking…</strong>
+          <small id="storageDetail">Browser notifications</small>
+        </div>
+        <button class="help-btn" id="demoBtn">✨ Load Demo Data</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">DOCUMENT CONTROL CENTER</p>
+          <h2 id="pageTitle">Good evening 👋</h2>
+          <p class="subtitle">Keep important documents safe, organized and on time.</p>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="notificationBtn" title="Enable browser notifications">🔔</button>
+          <button class="primary-btn" id="addBtn">＋ Add Document</button>
+        </div>
+      </header>
+
+      <section id="dashboardView" class="view">
+        <div class="hero-card">
+          <div>
+            <span class="hero-badge">SMART EXPIRY MONITOR</span>
+            <h3>Never miss an important renewal.</h3>
+            <p>DocuTrack checks your expiry dates and highlights documents that need attention at 7, 3, 2 and 1 day(s) before expiry.</p>
+            <button class="hero-btn" id="heroAdd">Add your first document →</button>
+          </div>
+          <div class="hero-graphic">
+            <div class="ring"><span id="safePercent">100%</span><small>on track</small></div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon total">▣</div><div><span>Total Documents</span><strong id="totalCount">0</strong></div></div>
+          <div class="stat-card"><div class="stat-icon safe">✓</div><div><span>On Track</span><strong id="safeCount">0</strong></div></div>
+          <div class="stat-card"><div class="stat-icon soon">!</div><div><span>Expiring Soon</span><strong id="soonCount">0</strong></div></div>
+          <div class="stat-card"><div class="stat-icon expired">×</div><div><span>Expired</span><strong id="expiredCount">0</strong></div></div>
+        </div>
+
+        <div class="section-heading"><div><h3>Needs Your Attention</h3><p>Documents approaching their expiry date</p></div><button class="text-btn" data-view-target="documents">View all →</button></div>
+        <div id="attentionList" class="document-list empty-state"><div class="empty-icon">✓</div><h4>You're all caught up</h4><p>Add a document to start tracking expiry dates.</p></div>
+
+        <div class="section-heading recent-heading"><div><h3>Recently Added</h3><p>Your latest documents</p></div></div>
+        <div id="recentList" class="document-list empty-state"><p>No documents yet.</p></div>
+      </section>
+
+      <section id="documentsView" class="view hidden">
+        <div class="section-heading page-heading"><div><h3>My Documents</h3><p>Store and manage your important files</p></div><button class="primary-btn" id="addBtn2">＋ Add Document</button></div>
+        <div class="toolbar">
+          <div class="search"><span>⌕</span><input id="searchInput" placeholder="Search documents, categories..."></div>
+          <select id="filterSelect"><option value="all">All status</option><option value="safe">On track</option><option value="soon">Expiring soon</option><option value="expired">Expired</option></select>
+          <select id="categorySelect"><option value="all">All categories</option><option>Identity</option><option>Education</option><option>Finance</option><option>Vehicle</option><option>Travel</option><option>Insurance</option><option>Other</option></select>
+        </div>
+        <div id="allDocuments" class="cards-grid"></div>
+      </section>
+
+      <section id="calendarView" class="view hidden">
+        <div class="section-heading page-heading"><div><h3>Expiry Timeline</h3><p>A visual view of upcoming deadlines</p></div></div>
+        <div id="timeline" class="timeline"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <div class="modal">
+      <button class="close-btn" id="closeModal">×</button>
+      <div class="modal-head"><span class="modal-kicker">NEW RECORD</span><h3>Add Document</h3><p>Save the document details and optionally attach the actual file.</p></div>
+      <form id="documentForm">
+        <div class="form-grid">
+          <label>Document name<input name="name" required placeholder="e.g. Passport"></label>
+          <label>Category<select name="category"><option>Identity</option><option>Education</option><option>Finance</option><option>Vehicle</option><option>Travel</option><option>Insurance</option><option>Other</option></select></label>
+          <label>Issue date<input type="date" name="issueDate"></label>
+          <label>Expiry date<input type="date" name="expiryDate" required></label>
+          <label class="full">Notes<textarea name="notes" rows="3" placeholder="Optional notes..."></textarea></label>
+          <label class="full file-drop">Attach document file
+            <input type="file" name="file" id="fileInput">
+            <span id="fileLabel">📎 Click to choose a PDF, image or document</span>
+          </label>
+        </div>
+        <div class="alert-preview"><span>🔔</span><div><strong>Automatic alerts</strong><p>In-app alerts appear 7, 3, 2 and 1 day before expiry. Browser notifications can also be enabled.</p></div></div>
+        <button class="primary-btn full-btn" type="submit">Save Document</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+  <script src="script.js"></script>
+<script>if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
+</body>
+</html>
